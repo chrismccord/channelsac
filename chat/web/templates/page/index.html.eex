@@ -1,0 +1,17 @@
+<h3>Phoenix Chat</h3>
+
+<h2 id="timer" class="text-right"></h2>
+<div id="messages" style="max-height: 300px; overflow: scroll;"></div>
+
+<input id="name-input"
+       type="text"
+       size="20"
+       placeholder="username"
+       value="browser-user"
+/>
+
+<input id="message-input"
+       type="text"
+       size="100"
+       placeholder="Send..."
+/>

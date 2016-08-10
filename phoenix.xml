@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE tsung SYSTEM "/usr/local/share/tsung/tsung-1.0.dtd">
+<tsung loglevel="debug" version="1.0">
+  <clients>
+    <client host="localhost" use_controller_vm="true" maxusers="60000" />
+  </clients>
+
+  <servers>
+    <!-- <server host="198.199.64.203" port="4000" type="tcp" /> -->
+    <server host="localhost" port="4000" type="tcp" />
+  </servers>
+
+  <load>
+    <arrivalphase phase="1" duration="1000" unit="second">
+      <users maxnumber="1500" arrivalrate="200" unit="second" />
+    </arrivalphase>
+  </load>
+
+  <options>
+    <option name="ports_range" min="1025" max="65535"/>
+  </options>
+
+  <sessions>
+    <session name="websocket" probability="100" type="ts_websocket">
+      <request>
+        <websocket type="connect" path="/socket/websocket"></websocket>
+      </request>
+
+      <setdynvars sourcetype="random_number" start="1" end="100">
+        <var name="roomId" />
+      </setdynvars>
+
+      <request subst="true">
+        <websocket type="message">
+          {"topic":"room:%%_roomId%%","event":"phx_join","payload":{},"ref":"1"}
+        </websocket>
+      </request>
+
+      <for var="i" from="1" to="1000" incr="1">
+        <thinktime min="10" max="60" random="true"></thinktime>
+        <request subst="true">
+          <websocket type="message">
+            {"topic":"room:%%_roomId%%","event":"publish_message","payload":{"username":"user","body":"test"},"ref":"%%ts_user_server:get_unique_id%%"}
+          </websocket>
+        </request>
+      </for>
+    </session>
+  </sessions>
+</tsung>

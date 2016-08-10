@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE tsung SYSTEM "/usr/local/share/tsung/tsung-1.0.dtd">
+<tsung loglevel="debug" version="1.0">
+  <clients>
+    <client host="localhost" use_controller_vm="true" maxusers="60000" />
+  </clients>
+
+  <servers>
+    <server host="198.199.64.203" port="3000" type="tcp" />
+  </servers>
+
+  <load>
+    <arrivalphase phase="1" duration="1000" unit="second">
+      <users maxnumber="1500" arrivalrate="200" unit="second" />
+    </arrivalphase>
+  </load>
+
+  <options>
+    <option name="ports_range" min="1025" max="65535"/>
+  </options>
+
+  <sessions>
+    <session name="websocket" probability="100" type="ts_websocket">
+      <request>
+        <websocket type="connect" path="/cable"></websocket>
+      </request>
+
+      <request subst="true">
+        <websocket type="message" frame="text">
+          {"command":"subscribe","identifier":"{\"channel\":\"RoomsChannel\"}"}
+        </websocket>
+      </request>
+
+      <for var="i" from="1" to="1000" incr="1">
+        <thinktime min="10" max="60" random="true"></thinktime>
+        <request subst="true">
+          <websocket type="message" frame="text">
+            {"command":"message","identifier":"{\"channel\":\"RoomsChannel\"}","data":"{\"username\":\"guest\",\"body\":\"test\",\"action\":\"publish_message\"}"}
+          </websocket>
+        </request>
+      </for>
+    </session>
+  </sessions>
+</tsung>
