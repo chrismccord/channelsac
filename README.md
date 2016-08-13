@@ -34,4 +34,4 @@ From the tsung client, to bench rails:
 
 From the tsung client, to bench phoenix:
 
-    $ ./bench_rails.sh
+    $ ./bench_phoenix.sh
