@@ -6,7 +6,7 @@
   </clients>
 
   <servers>
-    <server host="198.199.64.203" port="3000" type="tcp" />
+    <server host="localhost" port="3000" type="tcp" />
   </servers>
 
   <load>

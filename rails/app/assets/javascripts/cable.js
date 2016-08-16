@@ -21,7 +21,6 @@ $(document).ready(function(){
     var name = nameInput.val().toString()
     return(name === "" ? "guest" : name)
   }
-
   var now = function(){ return (new Date()).getTime() }
 
   var startTimer = function(){
@@ -42,10 +41,23 @@ $(document).ready(function(){
 
 
   App.room = App.cable.subscriptions.create("RoomsChannel", {
+    doPublish: function(){
+      var msg = messageInput.val()
+      App.room.publishMessage(msg)
+      messageInput.val("")
+      console.log("publishing message", msg)
+    },
+
+    connected: function(){
+      messageInput.val("test")
+      App.room.doPublish()
+    },
+
     received: function(data) {
       if(data.started === App.timer.startedAt){
         stopTimer(App.timer)
         messageInput.prop("disabled", false)
+        window.location.reload()
       }
       messagesContainer.removeClass('hidden')
       messagesContainer.append(renderMessage(data))
@@ -66,9 +78,7 @@ $(document).ready(function(){
   messageInput.keypress(function(event){
     if(event.which === 13){
       event.preventDefault()
-      App.room.publishMessage(messageInput.val())
-      messageInput.val("")
-      console.log("publishing message")
+      doPublish()
     }
   })
 
