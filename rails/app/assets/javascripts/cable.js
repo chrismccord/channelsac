@@ -86,5 +86,6 @@ $(document).ready(function(){
     messagesContainer.append(renderMessage(data))
   })
 
+  setTimeout(function(){ window.location.reload()}, 3000)
 
 })
