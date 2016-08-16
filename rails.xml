@@ -11,7 +11,7 @@
 
   <load>
     <arrivalphase phase="1" duration="1000" unit="second">
-      <users maxnumber="1500" arrivalrate="200" unit="second" />
+      <users maxnumber="10000" arrivalrate="200" unit="second" />
     </arrivalphase>
   </load>
 
